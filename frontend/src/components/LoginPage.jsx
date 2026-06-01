@@ -204,7 +204,7 @@ export default function LoginPage({ onLoginSuccess }) {
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="tejaswini@gmail.com"
+                    placeholder="Enter your email"
                     className="form-input icon-padded"
                     required
                     disabled={loading}
