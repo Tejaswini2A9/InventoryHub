@@ -41,7 +41,6 @@ def send_email(to_email: str, subject: str, text_body: str, html_body: str) -> N
 
 def send_otp_email(to_email: str, code: str) -> bool:
     if not smtp_is_configured():
-        print(f"[DEV EMAIL FALLBACK] Verification code for {to_email}: {code}", flush=True)
         return False
 
     send_email(

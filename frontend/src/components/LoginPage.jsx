@@ -23,6 +23,7 @@ export default function LoginPage({ onLoginSuccess }) {
   const [resending, setResending] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const isDevelopmentCodeMessage = success.includes('Development testing code: 000000');
 
   const handleCredentialsSubmit = async (e) => {
     e.preventDefault();
@@ -303,7 +304,9 @@ export default function LoginPage({ onLoginSuccess }) {
               )}
 
               <div className="form-group text-center mb-5">
-                <label className="form-label text-center block mb-2">Enter 6-Digit Code</label>
+                <label className="form-label text-center block mb-2">
+                  Enter 6-Digit Code {isDevelopmentCodeMessage && <span className="dev-code-note">(dev testing: 000000)</span>}
+                </label>
                 <div className="input-with-icon max-w-xs mx-auto">
                   <KeyRound size={16} className="input-icon" />
                   <input
@@ -741,6 +744,12 @@ export default function LoginPage({ onLoginSuccess }) {
           color: #334155;
           margin-bottom: 0.5rem;
           display: block;
+        }
+
+        .dev-code-note {
+          color: var(--text-muted);
+          font-size: 0.78rem;
+          font-weight: 600;
         }
 
         .input-with-icon {

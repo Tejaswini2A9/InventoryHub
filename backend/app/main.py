@@ -78,11 +78,15 @@ def login(payload: schemas.LoginRequest, db: Session = Depends(get_db)):
     auth.reset_failed_attempts(payload.email)
     
     # 4. Generate 2FA code
-    code = auth.generate_2fa_code(payload.email)
+    smtp_configured = email_service.smtp_is_configured()
+    code = auth.generate_2fa_code(
+        payload.email,
+        code=auth.DEV_2FA_CODE if not smtp_configured else None,
+    )
     delivered = email_service.send_otp_email(payload.email, code)
     
     return {
-        "message": "Verification code sent successfully. Please check your inbox." if delivered else "Verification code generated. SMTP is not configured, so the code was written to the backend console for local development.",
+        "message": "Verification code sent successfully. Please check your inbox." if delivered else f"Development testing code: {auth.DEV_2FA_CODE}. SMTP is not configured.",
         "email": payload.email,
     }
 

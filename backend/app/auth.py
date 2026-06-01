@@ -69,11 +69,12 @@ def reset_failed_attempts(email: str):
 # Structure: { email: { "code": str, "expires_at": datetime } }
 active_2fa_codes: Dict[str, Dict] = {}
 TWO_FACTOR_TTL_MINUTES = 5
+DEV_2FA_CODE = "000000"
 
-def generate_2fa_code(email: str) -> str:
+def generate_2fa_code(email: str, code: Optional[str] = None) -> str:
     """Generates a secure 6-digit 2FA code and stores it with an expiration timestamp."""
     email = email.strip().lower()
-    code = f"{secrets.randbelow(900000) + 100000}"
+    code = code or f"{secrets.randbelow(900000) + 100000}"
     expires_at = datetime.utcnow() + timedelta(minutes=TWO_FACTOR_TTL_MINUTES)
     active_2fa_codes[email] = {"code": code, "expires_at": expires_at}
     cache.set_otp(email, code, TWO_FACTOR_TTL_MINUTES * 60)
